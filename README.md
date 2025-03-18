@@ -15,13 +15,62 @@ This repository contains a simple Python interface for generating SVG documents 
 ### Prerequisites
 This script runs on Python 3 and does not require external dependencies.
 
-### Example Usage
+### Usage
+
+The code provides a single class `Node`, this makes an XML element with the same properties.
+
+For example in python 
+```python
+canvas('circle', cx=30, cy=40, r=10, stroke='#600', fill='none', stroke_width='1.5px')
+```
+becomes
+```xml
+<circle cx="30" cy="40" r="10" stroke="#600" fill="none" stroke-width="1.5px"/>
+```
+Note that the underscore in `stroke_width` automatically becomes a dash in `stroke-width`.
+
+There is one special element, `svg`, which when made updates the parameters with 
+` {"xmlns":'http://www.w3.org/2000/svg', "version":'1.1', "xmlns:xlink":'http://www.w3.org/1999/xlink'}` for convenience.
+
+This means that to start a new SVG document, you only need to write
+```python
+canvas = Node('svg', width='200px', height='200px')
+```
+to get 
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="200px" height="200px">
+```
+
+To add text into an element, call `text()` on the node. `canavs('text', x=10, y=20).text("world")` to get `<text x="60" y="20">world</text>`.
+
+All nodes can create new nodes that are nested.
+starting with the `svg` element.
+```python
+canvas = Node('svg', width='200px', height='200px')
+```
+one can add directly to that calling from the new `canvas` object to :
+```python
+g = canvas('g')
+```
+then into the group make new elements with
+```python
+g('text', x=10, y=20).text("world")
+```
+
+#### Catches
+The simple mapping of names means that if there are python keyword collisions or spaces in the key then a slightly different invocation is required.
+For example in the case to add a `class` to an element, for example when styling, one can not use class as a keyword argument, instead use python's dictionary expansion to keywords:
+```python
+canvas('text', *{"class":"myclass"}) 
+```
+
+### Example 
 The `Node` class acts as a flexible interface for constructing SVGs. Below is an example of how to use it. This script generates an SVG file (`SVG_nesting_test.svg`) containing a circle, a horizontal line, and two groups of text elements.
 
 
 
 ```python
-from svg_generator import Node
+from XMLish import Node
 
 # Create an SVG canvas
 canvas = Node('svg', width='200px', height='200px') # 'svg' is the only special node. 
@@ -84,8 +133,10 @@ canvas.save('SVG_nesting_test.svg')
 ```
 
 ## Contributing
+
+The base class is considered nearly feature complete in simplisity.
 Feel free to contribute by improving the code or adding new features.
-The base class is considered nearly feature complete in simplisity
+Examples are most welcome.
 
 ## Source
 The full source code is just this
