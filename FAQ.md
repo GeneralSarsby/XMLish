@@ -1,4 +1,43 @@
-## FAQ (Frequently Asked, Yet Slightly Annoying, Questions)
+## FAQ
+
+### Does this work in iPython and the Jupyter notebook?
+It can if you bring in the Ipython display.
+
+```python
+from IPython.display import SVG, display
+
+# Let's say you have an SVG string stored in the variable `svg_data`
+# make the SVG here ...
+svg_data = str(canvas)
+display(SVG(svg_data))
+```
+
+### Does this work with Latex?
+It can if you bring in the latex `SVG` package. 
+Latex the SVG package can do this automatically for you if inkscape in in the path.
+You can also work thru Inkscape to do a conversion for you.
+
+### How do I convert SVGs to a different format?
+
+With Inkscape you can do something from the command line like `inkscape -D -z --file=myimage.svg --export-pdf=myimage.pdf`, or do it manually by opening the file and picking "save a copy" from the file menu.
+
+With google chrome you can do something like `google-chrome --headless --disable-gpu --no-sandbox --screenshot=example.png --window-size=1280,720 file:///path/to/your/document.html`
+
+### Does this work with web pages?
+
+Yes! Most browers will nativly render svg images. So upload them and include them as normal with an img tag
+```html
+<img src="path/to/your/image.svg" alt="Description of SVG" />
+```
+or directly inline as
+```html
+<body>
+  <!-- Inline SVG code -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="50" />
+  </svg>
+</body>
+```
 
 ### Does this really need to be a library? 
 Oh, absolutely not. Why write repetitive, error-prone XML manually when you can have a neat, Pythonic interface do it for you? But hey, if you enjoy typing `<svg>` and `</svg>` by hand all day, be my guest.  
